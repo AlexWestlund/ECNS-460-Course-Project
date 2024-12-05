@@ -1,6 +1,6 @@
 library(tidyverse)
 library(writexl)
-
+library(ggplot2)
 
 Batchs <- read.csv("C:/Users/freds/OneDrive/Documents/Capstone Data/Data/Inventory_Batches.csv")
 Products <- read.csv("C:/Users/freds/OneDrive/Documents/Capstone Data/Data/Products.csv")
@@ -145,12 +145,12 @@ Full_Cleaned <- Full_Cleaned |>
 
 #Save cleaned data set so we dont have to run the code above again
 write_excel_csv(Full_Cleaned,"C:/Users/freds/OneDrive/Documents/Capstone Data/Data/Full_Cleaned.csv")
-Full_Cleaned <- read.csv("C:/Users/freds/OneDrive/Documents/Capstone Data/Data/Full_Cleaned.csv")
+Full_Cleaned <- read.csv("C:/Users/alexw/Desktop/Capstone/Data/Full_Cleaned.csv")
 
 ################################################################
 #Frequency of each compound
-Freq = colSums(is.na(Full_Cleaned[,3:16]))
-Freq = nrow(Full_Cleaned)-Freq
+Freq_na = colSums(is.na(Full_Cleaned[,3:16]))
+Freq = Freq_na/nrow(Full_Cleaned)
 
 HIST = data.frame(
   compound = names(Full_Cleaned[,3:16]),
@@ -160,9 +160,9 @@ HIST = data.frame(
 ggplot(HIST, aes(x = compound, y = freq)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   theme_minimal() +
-  labs(title = "Histogram of Compound Frequency",
+  labs(title = "Histogram of Compound 'NA' Frequency",
        x = "Compound",
-       y = "Freq") +
+       y = "Proportion NA") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ###########################################
